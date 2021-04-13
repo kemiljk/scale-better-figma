@@ -157,18 +157,20 @@
 </p>
 <div>
   <input
+    name="scalePercent"
     type="text"
     id="scaleAmount"
     value=""
     placeholder="Scale (%)"
     onchange="setValues()"
   />
-  <button id="scale" class="primary">Scale</button>
+  <button id="scaleByPercent" class="primary">Scale</button>
 </div>
 
 <div>
   <input
     type="text"
+    name="scaleWidth"
     id="scaleWidth"
     value=""
     placeholder="Scale (px)"
@@ -192,7 +194,7 @@
     scaleWidthAmount = Number(scaleWidthTextBox.value ?? 0);
   }
 
-  document.getElementById("scale").onclick = () => {
+  document.getElementById("scaleByPercent").onclick = () => {
     parent.postMessage(
       { pluginMessage: { type: "scale-value", scaleAmount } },
       "*"
@@ -200,8 +202,8 @@
   };
 
   document
-    .querySelector("#scaleAmount")
-    .addEventListener("keypress", function (e) {
+    .querySelector('input[name="scalePercent"]')
+    .addEventListener("keyup", function (e) {
       if (e.key === "Enter") {
         parent.postMessage(
           { pluginMessage: { type: "scale-value", scaleAmount } },
@@ -218,8 +220,8 @@
   };
 
   document
-    .querySelector("#scaleByWidth")
-    .addEventListener("keypress", function (e) {
+    .querySelector('input[name="scaleWidth"]')
+    .addEventListener("keyup", function (e) {
       if (e.key === "Enter") {
         parent.postMessage(
           { pluginMessage: { type: "scale-width-value", scaleWidthAmount } },
