@@ -34,4 +34,20 @@ figma.ui.onmessage = (msg) => {
     }
     resizeFrameByWidth();
   }
+
+  if (msg.type === "scale-height-value") {
+    let result;
+    async function resizeFrameByHeight() {
+      figma.root.children.flatMap((pageNode) =>
+        pageNode.selection.forEach(async (node) => {
+          if (!nodeTypes.includes(node.type)) {
+            result = msg.scaleHeightAmount / node.height;
+            node.rescale(result);
+            node.resize(Math.round(node.width), Math.round(node.height));
+          }
+        })
+      );
+    }
+    resizeFrameByHeight();
+  }
 };

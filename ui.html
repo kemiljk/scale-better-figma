@@ -61,8 +61,6 @@
     box-shadow: none;
     outline: none;
     border: 2px solid darkgrey;
-  }
-  input:first-of-type {
     margin-right: 0.25rem;
   }
   input:active {
@@ -149,6 +147,15 @@
     margin-bottom: 10px;
     color: darkslategray;
   }
+  .h-6 {
+    height: 1rem;
+  }
+  .w-6 {
+    height: 1rem;
+  }
+  .icon {
+    width: 50px;
+  }
 </style>
 
 <p>
@@ -173,10 +180,53 @@
     name="scaleWidth"
     id="scaleWidth"
     value=""
-    placeholder="Scale (px)"
+    placeholder="Width (px)"
     onchange="setWidthValues()"
   />
-  <button id="scaleByWidth" class="primary">Scale</button>
+  <button id="scaleByWidth" class="primary icon">
+    <span
+      ><svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="#fff"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
+        />
+      </svg>
+    </span>
+  </button>
+  <input
+    type="text"
+    name="scaleHeight"
+    id="scaleHeight"
+    value=""
+    placeholder="Height (px)"
+    onchange="setHeightValues()"
+  />
+  <button id="scaleByHeight" class="primary icon">
+    <span
+      ><svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="#fff"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
+        />
+      </svg>
+    </span>
+  </button>
 </div>
 
 <script>
@@ -192,6 +242,13 @@
 
   function setWidthValues() {
     scaleWidthAmount = Number(scaleWidthTextBox.value ?? 0);
+  }
+
+  const scaleHeightTextBox = document.getElementById("scaleHeight");
+  let scaleHeightAmount = Number(scaleHeightTextBox.value ?? 0);
+
+  function setHeightValues() {
+    scaleHeightAmount = Number(scaleHeightTextBox.value ?? 0);
   }
 
   document.getElementById("scaleByPercent").onclick = () => {
@@ -225,6 +282,24 @@
       if (e.key === "Enter") {
         parent.postMessage(
           { pluginMessage: { type: "scale-width-value", scaleWidthAmount } },
+          "*"
+        );
+      }
+    });
+
+  document.getElementById("scaleByHeight").onclick = () => {
+    parent.postMessage(
+      { pluginMessage: { type: "scale-height-value", scaleHeightAmount } },
+      "*"
+    );
+  };
+
+  document
+    .querySelector('input[name="scaleHeight"]')
+    .addEventListener("keyup", function (e) {
+      if (e.key === "Enter") {
+        parent.postMessage(
+          { pluginMessage: { type: "scale-height-value", scaleHeightAmount } },
           "*"
         );
       }
