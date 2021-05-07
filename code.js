@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-figma.showUI(__html__, { width: 300, height: 150 });
+figma.showUI(__html__, { width: 300, height: 205 });
 // const nodeTypes = ["FRAME", "COMPONENT", "INSTANCE", "GROUP", "RECTANGLE", "ELLIPSE", ""];
 const nodeTypes = ["DOCUMENT", "PAGE"];
 const { selection } = figma.currentPage;
@@ -19,6 +19,10 @@ figma.ui.onmessage = (msg) => {
                 figma.root.children.flatMap((pageNode) => pageNode.selection.forEach((node) => __awaiter(this, void 0, void 0, function* () {
                     if (!nodeTypes.includes(node.type)) {
                         result = msg.scaleAmount / 100;
+                        node.constraints = {
+                            horizontal: msg.horizontalConstraint,
+                            vertical: msg.verticalConstraint,
+                        };
                         node.rescale(result);
                         node.resize(Math.round(node.width), Math.round(node.height));
                     }
@@ -26,6 +30,7 @@ figma.ui.onmessage = (msg) => {
             });
         }
         resizeFrame();
+        figma.closePlugin();
     }
     if (msg.type === "scale-width-value") {
         let result;
@@ -34,6 +39,10 @@ figma.ui.onmessage = (msg) => {
                 figma.root.children.flatMap((pageNode) => pageNode.selection.forEach((node) => __awaiter(this, void 0, void 0, function* () {
                     if (!nodeTypes.includes(node.type)) {
                         result = msg.scaleWidthAmount / node.width;
+                        node.constraints = {
+                            horizontal: msg.horizontalConstraint,
+                            vertical: msg.verticalConstraint,
+                        };
                         node.rescale(result);
                         node.resize(Math.round(node.width), Math.round(node.height));
                     }
@@ -41,6 +50,7 @@ figma.ui.onmessage = (msg) => {
             });
         }
         resizeFrameByWidth();
+        figma.closePlugin();
     }
     if (msg.type === "scale-height-value") {
         let result;
@@ -49,6 +59,10 @@ figma.ui.onmessage = (msg) => {
                 figma.root.children.flatMap((pageNode) => pageNode.selection.forEach((node) => __awaiter(this, void 0, void 0, function* () {
                     if (!nodeTypes.includes(node.type)) {
                         result = msg.scaleHeightAmount / node.height;
+                        node.constraints = {
+                            horizontal: msg.horizontalConstraint,
+                            vertical: msg.verticalConstraint,
+                        };
                         node.rescale(result);
                         node.resize(Math.round(node.width), Math.round(node.height));
                     }
@@ -56,5 +70,6 @@ figma.ui.onmessage = (msg) => {
             });
         }
         resizeFrameByHeight();
+        figma.closePlugin();
     }
 };

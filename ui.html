@@ -69,6 +69,27 @@
   input:focus {
     border: 2px solid #17a0fb;
   }
+  select {
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    padding: 8px;
+    background-color: white;
+    color: rgb(87, 87, 87);
+    font-weight: 500;
+    box-shadow: none;
+    outline: none;
+    border: 2px solid darkgrey;
+  }
+  select:first-of-type {
+    margin-right: 0.25rem;
+  }
+  select:active {
+    border: 2px solid #17a0fb;
+  }
+  select:focus {
+    border: 2px solid #17a0fb;
+  }
   .primary {
     margin-right: 0.25rem;
     background-color: #17a0fb;
@@ -158,10 +179,26 @@
   }
 </style>
 
-<p>
-  Scale everything in your selection easily to an exact amount by percent or
-  exact width
-</p>
+<h5 style="margin-bottom: 0">Set constraints</h5>
+<div>
+  <select id="horizontalConstraint">
+    <option selected disabled>&#8644;</option>
+    <option value="MIN">MIN</option>
+    <option value="MAX">MAX</option>
+    <option value="CENTER">CENTER</option>
+    <option value="STRETCH">STRETCH</option>
+    <option value="SCALE">SCALE</option>
+  </select>
+  <select id="verticalConstraint">
+    <option selected disabled>&#8645;</option>
+    <option value="MIN">MIN</option>
+    <option value="MAX">MAX</option>
+    <option value="CENTER">CENTER</option>
+    <option value="STRETCH">STRETCH</option>
+    <option value="SCALE">SCALE</option>
+  </select>
+</div>
+<h5 style="margin-bottom: 0">Scale</h5>
 <div>
   <input
     name="scalePercent"
@@ -251,9 +288,31 @@
     scaleHeightAmount = Number(scaleHeightTextBox.value ?? 0);
   }
 
+  const horizontalConstraints = document.getElementById("horizontalConstraint");
+  console.log(horizontalConstraints.value);
+  let horizontalConstraint = horizontalConstraints.value;
+
+  const verticalConstraints = document.getElementById("verticalConstraint");
+  console.log(verticalConstraints.value);
+  let verticalConstraint = verticalConstraints.value;
+
+  horizontalConstraints.onchange = () => {
+    console.log(horizontalConstraints.value);
+  };
+  verticalConstraints.onchange = () => {
+    console.log(verticalConstraints.value);
+  };
+
   document.getElementById("scaleByPercent").onclick = () => {
     parent.postMessage(
-      { pluginMessage: { type: "scale-value", scaleAmount } },
+      {
+        pluginMessage: {
+          type: "scale-value",
+          scaleAmount,
+          horizontalConstraint,
+          verticalConstraint,
+        },
+      },
       "*"
     );
   };
@@ -263,7 +322,14 @@
     .addEventListener("keyup", function (e) {
       if (e.key === "Enter") {
         parent.postMessage(
-          { pluginMessage: { type: "scale-value", scaleAmount } },
+          {
+            pluginMessage: {
+              type: "scale-value",
+              scaleAmount,
+              horizontalConstraint,
+              verticalConstraint,
+            },
+          },
           "*"
         );
       }
@@ -271,7 +337,14 @@
 
   document.getElementById("scaleByWidth").onclick = () => {
     parent.postMessage(
-      { pluginMessage: { type: "scale-width-value", scaleWidthAmount } },
+      {
+        pluginMessage: {
+          type: "scale-width-value",
+          scaleWidthAmount,
+          horizontalConstraint,
+          verticalConstraint,
+        },
+      },
       "*"
     );
   };
@@ -281,7 +354,14 @@
     .addEventListener("keyup", function (e) {
       if (e.key === "Enter") {
         parent.postMessage(
-          { pluginMessage: { type: "scale-width-value", scaleWidthAmount } },
+          {
+            pluginMessage: {
+              type: "scale-width-value",
+              scaleWidthAmount,
+              horizontalConstraint,
+              verticalConstraint,
+            },
+          },
           "*"
         );
       }
@@ -289,7 +369,14 @@
 
   document.getElementById("scaleByHeight").onclick = () => {
     parent.postMessage(
-      { pluginMessage: { type: "scale-height-value", scaleHeightAmount } },
+      {
+        pluginMessage: {
+          type: "scale-height-value",
+          scaleHeightAmount,
+          horizontalConstraint,
+          verticalConstraint,
+        },
+      },
       "*"
     );
   };
@@ -299,7 +386,14 @@
     .addEventListener("keyup", function (e) {
       if (e.key === "Enter") {
         parent.postMessage(
-          { pluginMessage: { type: "scale-height-value", scaleHeightAmount } },
+          {
+            pluginMessage: {
+              type: "scale-height-value",
+              scaleHeightAmount,
+              horizontalConstraint,
+              verticalConstraint,
+            },
+          },
           "*"
         );
       }
