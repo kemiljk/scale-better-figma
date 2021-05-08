@@ -7,8 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-figma.showUI(__html__, { width: 300, height: 205 });
-// const nodeTypes = ["FRAME", "COMPONENT", "INSTANCE", "GROUP", "RECTANGLE", "ELLIPSE", ""];
+figma.showUI(__html__, { width: 300, height: 255 });
 const nodeTypes = ["DOCUMENT", "PAGE"];
 const { selection } = figma.currentPage;
 figma.ui.onmessage = (msg) => {
@@ -30,7 +29,9 @@ figma.ui.onmessage = (msg) => {
             });
         }
         resizeFrame();
-        figma.closePlugin();
+        if (msg.checkboxOn === true) {
+            figma.closePlugin();
+        }
     }
     if (msg.type === "scale-width-value") {
         let result;
@@ -50,7 +51,9 @@ figma.ui.onmessage = (msg) => {
             });
         }
         resizeFrameByWidth();
-        figma.closePlugin();
+        if (msg.checkboxOn === true) {
+            figma.closePlugin();
+        }
     }
     if (msg.type === "scale-height-value") {
         let result;
@@ -70,6 +73,8 @@ figma.ui.onmessage = (msg) => {
             });
         }
         resizeFrameByHeight();
-        figma.closePlugin();
+        if (msg.checkboxOn === true) {
+            figma.closePlugin();
+        }
     }
 };
