@@ -16,6 +16,9 @@ figma.ui.onmessage = (msg) => {
             };
             node.rescale(result);
             node.resize(Math.round(node.width), Math.round(node.height));
+            figma.notify(
+              `Rescaled to ${node.width}px wide and ${node.height}px high`
+            );
           }
         })
       );
@@ -39,6 +42,7 @@ figma.ui.onmessage = (msg) => {
             };
             node.rescale(result);
             node.resize(Math.round(node.width), Math.round(node.height));
+            figma.notify(`Rescaled to ${node.width}px wide`);
           }
         })
       );
@@ -62,6 +66,7 @@ figma.ui.onmessage = (msg) => {
             };
             node.rescale(result);
             node.resize(Math.round(node.width), Math.round(node.height));
+            figma.notify(`Rescaled to ${node.height}px high`);
           }
         })
       );
