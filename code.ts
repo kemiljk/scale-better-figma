@@ -6,22 +6,20 @@ figma.ui.onmessage = (msg) => {
   if (msg.type === "scale-value") {
     let result;
     async function resizeFrame() {
-      figma.root.children.flatMap((pageNode) =>
-        pageNode.selection.forEach(async (node) => {
-          if (!nodeTypes.includes(node.type)) {
-            result = msg.scaleAmount / 100;
-            node.constraints = {
-              horizontal: msg.horizontalConstraint,
-              vertical: msg.verticalConstraint,
-            };
-            node.rescale(result);
-            node.resize(Math.round(node.width), Math.round(node.height));
-            figma.notify(
-              `Rescaled to ${node.width}px wide and ${node.height}px high`
-            );
-          }
-        })
-      );
+      selection.forEach(async (node) => {
+        if (!nodeTypes.includes(node.type)) {
+          result = msg.scaleAmount / 100;
+          node.constraints = {
+            horizontal: msg.horizontalConstraint,
+            vertical: msg.verticalConstraint,
+          };
+          node.rescale(result);
+          node.resize(Math.round(node.width), Math.round(node.height));
+          figma.notify(
+            `Rescaled to ${node.width}px wide and ${node.height}px high`
+          );
+        }
+      });
     }
     resizeFrame();
     if (msg.checkboxOn === true) {
@@ -32,20 +30,18 @@ figma.ui.onmessage = (msg) => {
   if (msg.type === "scale-width-value") {
     let result;
     async function resizeFrameByWidth() {
-      figma.root.children.flatMap((pageNode) =>
-        pageNode.selection.forEach(async (node) => {
-          if (!nodeTypes.includes(node.type)) {
-            result = msg.scaleWidthAmount / node.width;
-            node.constraints = {
-              horizontal: msg.horizontalConstraint,
-              vertical: msg.verticalConstraint,
-            };
-            node.rescale(result);
-            node.resize(Math.round(node.width), Math.round(node.height));
-            figma.notify(`Rescaled to ${node.width}px wide`);
-          }
-        })
-      );
+      selection.forEach(async (node) => {
+        if (!nodeTypes.includes(node.type)) {
+          result = msg.scaleWidthAmount / node.width;
+          node.constraints = {
+            horizontal: msg.horizontalConstraint,
+            vertical: msg.verticalConstraint,
+          };
+          node.rescale(result);
+          node.resize(Math.round(node.width), Math.round(node.height));
+          figma.notify(`Rescaled to ${node.width}px wide`);
+        }
+      });
     }
     resizeFrameByWidth();
     if (msg.checkboxOn === true) {
@@ -56,20 +52,18 @@ figma.ui.onmessage = (msg) => {
   if (msg.type === "scale-height-value") {
     let result;
     async function resizeFrameByHeight() {
-      figma.root.children.flatMap((pageNode) =>
-        pageNode.selection.forEach(async (node) => {
-          if (!nodeTypes.includes(node.type)) {
-            result = msg.scaleHeightAmount / node.height;
-            node.constraints = {
-              horizontal: msg.horizontalConstraint,
-              vertical: msg.verticalConstraint,
-            };
-            node.rescale(result);
-            node.resize(Math.round(node.width), Math.round(node.height));
-            figma.notify(`Rescaled to ${node.height}px high`);
-          }
-        })
-      );
+      selection.forEach(async (node) => {
+        if (!nodeTypes.includes(node.type)) {
+          result = msg.scaleHeightAmount / node.height;
+          node.constraints = {
+            horizontal: msg.horizontalConstraint,
+            vertical: msg.verticalConstraint,
+          };
+          node.rescale(result);
+          node.resize(Math.round(node.width), Math.round(node.height));
+          figma.notify(`Rescaled to ${node.height}px high`);
+        }
+      });
     }
     resizeFrameByHeight();
     if (msg.checkboxOn === true) {

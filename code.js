@@ -15,7 +15,7 @@ figma.ui.onmessage = (msg) => {
         let result;
         function resizeFrame() {
             return __awaiter(this, void 0, void 0, function* () {
-                figma.root.children.flatMap((pageNode) => pageNode.selection.forEach((node) => __awaiter(this, void 0, void 0, function* () {
+                selection.forEach((node) => __awaiter(this, void 0, void 0, function* () {
                     if (!nodeTypes.includes(node.type)) {
                         result = msg.scaleAmount / 100;
                         node.constraints = {
@@ -26,7 +26,7 @@ figma.ui.onmessage = (msg) => {
                         node.resize(Math.round(node.width), Math.round(node.height));
                         figma.notify(`Rescaled to ${node.width}px wide and ${node.height}px high`);
                     }
-                })));
+                }));
             });
         }
         resizeFrame();
@@ -38,7 +38,7 @@ figma.ui.onmessage = (msg) => {
         let result;
         function resizeFrameByWidth() {
             return __awaiter(this, void 0, void 0, function* () {
-                figma.root.children.flatMap((pageNode) => pageNode.selection.forEach((node) => __awaiter(this, void 0, void 0, function* () {
+                selection.forEach((node) => __awaiter(this, void 0, void 0, function* () {
                     if (!nodeTypes.includes(node.type)) {
                         result = msg.scaleWidthAmount / node.width;
                         node.constraints = {
@@ -49,7 +49,7 @@ figma.ui.onmessage = (msg) => {
                         node.resize(Math.round(node.width), Math.round(node.height));
                         figma.notify(`Rescaled to ${node.width}px wide`);
                     }
-                })));
+                }));
             });
         }
         resizeFrameByWidth();
@@ -61,7 +61,7 @@ figma.ui.onmessage = (msg) => {
         let result;
         function resizeFrameByHeight() {
             return __awaiter(this, void 0, void 0, function* () {
-                figma.root.children.flatMap((pageNode) => pageNode.selection.forEach((node) => __awaiter(this, void 0, void 0, function* () {
+                selection.forEach((node) => __awaiter(this, void 0, void 0, function* () {
                     if (!nodeTypes.includes(node.type)) {
                         result = msg.scaleHeightAmount / node.height;
                         node.constraints = {
@@ -72,7 +72,7 @@ figma.ui.onmessage = (msg) => {
                         node.resize(Math.round(node.width), Math.round(node.height));
                         figma.notify(`Rescaled to ${node.height}px high`);
                     }
-                })));
+                }));
             });
         }
         resizeFrameByHeight();
