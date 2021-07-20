@@ -1,5 +1,6 @@
-figma.showUI(__html__, { width: 300, height: 255 });
-const nodeTypes = ["DOCUMENT", "PAGE"];
+figma.showUI(__html__, { width: 300, height: 280 });
+const nodeTypes = ["DOCUMENT", "PAGE", "SLICE"];
+
 const { selection } = figma.currentPage;
 
 figma.ui.onmessage = (msg) => {
@@ -9,10 +10,20 @@ figma.ui.onmessage = (msg) => {
       selection.forEach(async (node) => {
         if (!nodeTypes.includes(node.type)) {
           result = msg.scaleAmount / 100;
-          node.constraints = {
-            horizontal: msg.horizontalConstraint,
-            vertical: msg.verticalConstraint,
-          };
+          if (
+            node.type === "COMPONENT" ||
+            node.type === "COMPONENT_SET" ||
+            node.type === "RECTANGLE" ||
+            node.type === "ELLIPSE" ||
+            node.type === "INSTANCE" ||
+            node.type === "STAR" ||
+            node.type === "POLYGON"
+          ) {
+            node.constraints = {
+              horizontal: msg.horizontalConstraint as ConstraintType,
+              vertical: msg.verticalConstraint as ConstraintType,
+            };
+          }
           node.rescale(result);
           node.resize(Math.round(node.width), Math.round(node.height));
           figma.notify(
@@ -33,10 +44,20 @@ figma.ui.onmessage = (msg) => {
       selection.forEach(async (node) => {
         if (!nodeTypes.includes(node.type)) {
           result = msg.scaleWidthAmount / node.width;
-          node.constraints = {
-            horizontal: msg.horizontalConstraint,
-            vertical: msg.verticalConstraint,
-          };
+          if (
+            node.type === "COMPONENT" ||
+            node.type === "COMPONENT_SET" ||
+            node.type === "RECTANGLE" ||
+            node.type === "ELLIPSE" ||
+            node.type === "INSTANCE" ||
+            node.type === "STAR" ||
+            node.type === "POLYGON"
+          ) {
+            node.constraints = {
+              horizontal: msg.horizontalConstraint as ConstraintType,
+              vertical: msg.verticalConstraint as ConstraintType,
+            };
+          }
           node.rescale(result);
           node.resize(Math.round(node.width), Math.round(node.height));
           figma.notify(`Rescaled to ${node.width}px wide`);
@@ -55,10 +76,20 @@ figma.ui.onmessage = (msg) => {
       selection.forEach(async (node) => {
         if (!nodeTypes.includes(node.type)) {
           result = msg.scaleHeightAmount / node.height;
-          node.constraints = {
-            horizontal: msg.horizontalConstraint,
-            vertical: msg.verticalConstraint,
-          };
+          if (
+            node.type === "COMPONENT" ||
+            node.type === "COMPONENT_SET" ||
+            node.type === "RECTANGLE" ||
+            node.type === "ELLIPSE" ||
+            node.type === "INSTANCE" ||
+            node.type === "STAR" ||
+            node.type === "POLYGON"
+          ) {
+            node.constraints = {
+              horizontal: msg.horizontalConstraint as ConstraintType,
+              vertical: msg.verticalConstraint as ConstraintType,
+            };
+          }
           node.rescale(result);
           node.resize(Math.round(node.width), Math.round(node.height));
           figma.notify(`Rescaled to ${node.height}px high`);

@@ -46,10 +46,22 @@
     width: 100%;
     padding-top: 0.25rem;
   }
+
+  div.vertical {
+    display: block;
+  }
+
   p {
     font-size: smaller;
     color: darkslategray;
   }
+
+  span.small {
+    font-size: smaller;
+    color: darkslategray;
+    margin-bottom: 0.25rem;
+  }
+
   input {
     width: 100%;
     height: 40px;
@@ -257,20 +269,60 @@
 </div>
 <h5 style="margin-bottom: 0; margin-top: 0">Set constraints</h5>
 <div>
-  <select id="horizontalConstraint">
-    <option value="MIN">MIN</option>
-    <option value="MAX">MAX</option>
-    <option value="CENTER">CENTER</option>
-    <option value="STRETCH">STRETCH</option>
-    <option value="SCALE">SCALE</option>
-  </select>
-  <select id="verticalConstraint">
-    <option value="MIN">MIN</option>
-    <option value="MAX">MAX</option>
-    <option value="CENTER">CENTER</option>
-    <option value="STRETCH">STRETCH</option>
-    <option value="SCALE">SCALE</option>
-  </select>
+  <div class="vertical">
+    <div style="justify-content: flex-start">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 32 32"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style="margin-bottom: 0.25rem; margin-right: 0.5rem"
+      >
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M3.98 10C4.2451 10 4.46 10.2239 4.46 10.5V15.5H26.54V10.5C26.54 10.2239 26.7549 10 27.02 10C27.2851 10 27.5 10.2239 27.5 10.5V21.5C27.5 21.7761 27.2851 22 27.02 22C26.7549 22 26.54 21.7761 26.54 21.5V16.5H4.46V21.5C4.46 21.7761 4.2451 22 3.98 22C3.7149 22 3.5 21.7761 3.5 21.5V10.5C3.5 10.2239 3.7149 10 3.98 10Z"
+          fill="#404B6A"
+        />
+      </svg>
+      <span class="small">Horizontal</span>
+    </div>
+    <select id="horizontalConstraint" onchange="setHorizontalConstraint()">
+      <option value="MIN">Left</option>
+      <option value="MAX">Right</option>
+      <option value="CENTER">Center</option>
+      <option value="STRETCH">Left and Right</option>
+      <option value="SCALE">Scale</option>
+    </select>
+  </div>
+  <div class="vertical">
+    <div style="justify-content: flex-start">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 32 32"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style="margin-bottom: 0.25rem"
+      >
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M10 4.48C10 4.2149 10.2239 4 10.5 4L21.5 4C21.7761 4 22 4.2149 22 4.48C22 4.7451 21.7761 4.96 21.5 4.96L16.5 4.96L16.5 27.04H21.5C21.7761 27.04 22 27.2549 22 27.52C22 27.7851 21.7761 28 21.5 28H10.5C10.2239 28 10 27.7851 10 27.52C10 27.2549 10.2239 27.04 10.5 27.04H15.5L15.5 4.96L10.5 4.96C10.2239 4.96 10 4.7451 10 4.48Z"
+          fill="#404B6A"
+        />
+      </svg>
+      <span class="small">Vertical</span>
+    </div>
+    <select id="verticalConstraint" onchange="setVerticalConstraint()">
+      <option value="MIN">Top</option>
+      <option value="MAX">Bottom</option>
+      <option value="CENTER">Center</option>
+      <option value="STRETCH">Top and Bottom</option>
+      <option value="SCALE">Scale</option>
+    </select>
+  </div>
 </div>
 <h5 style="margin-bottom: 0">Scale</h5>
 <div>
@@ -341,26 +393,16 @@
 </div>
 
 <script>
+  /* Variables */
+
   const scaleTextBox = document.getElementById("scaleAmount");
   let scaleAmount = Number(scaleTextBox.value ?? 0);
-
-  function setValues() {
-    scaleAmount = Number(scaleTextBox.value ?? 0);
-  }
 
   const scaleWidthTextBox = document.getElementById("scaleWidth");
   let scaleWidthAmount = Number(scaleWidthTextBox.value ?? 0);
 
-  function setWidthValues() {
-    scaleWidthAmount = Number(scaleWidthTextBox.value ?? 0);
-  }
-
   const scaleHeightTextBox = document.getElementById("scaleHeight");
   let scaleHeightAmount = Number(scaleHeightTextBox.value ?? 0);
-
-  function setHeightValues() {
-    scaleHeightAmount = Number(scaleHeightTextBox.value ?? 0);
-  }
 
   const horizontalConstraints = document.getElementById("horizontalConstraint");
   let horizontalConstraint = horizontalConstraints.value;
@@ -368,12 +410,51 @@
   const verticalConstraints = document.getElementById("verticalConstraint");
   let verticalConstraint = verticalConstraints.value;
 
-  horizontalConstraints.onchange = () => {
-    console.log(horizontalConstraints.value);
-  };
-  verticalConstraints.onchange = () => {
-    console.log(verticalConstraints.value);
-  };
+  /* Functions */
+
+  function setValues() {
+    scaleAmount = Number(scaleTextBox.value ?? 0);
+  }
+
+  function setWidthValues() {
+    scaleWidthAmount = Number(scaleWidthTextBox.value ?? 0);
+  }
+
+  function setHeightValues() {
+    scaleHeightAmount = Number(scaleHeightTextBox.value ?? 0);
+  }
+
+  function setHorizontalConstraint() {
+    horizontalConstraint = horizontalConstraints.value;
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: ["scale-value", "scale-height-value", "scale-width-value"],
+          horizontalConstraint,
+        },
+      },
+      "*"
+    );
+  }
+
+  function setVerticalConstraint() {
+    verticalConstraint = verticalConstraints.value;
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: ["scale-value", "scale-height-value", "scale-width-value"],
+          verticalConstraint,
+        },
+      },
+      "*"
+    );
+  }
+
+  function sendParentConstraints() {
+    setVerticalConstraint();
+    setHorizontalConstraint();
+    console.log(horizontalConstraint, verticalConstraint, "from UI");
+  }
 
   const checkbox = document.getElementById("checkbox");
   let checkboxOn = checkbox.hasAttribute("checked");
