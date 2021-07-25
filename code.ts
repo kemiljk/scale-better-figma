@@ -1,13 +1,11 @@
-figma.showUI(__html__, { width: 300, height: 280 });
+figma.showUI(__html__, { width: 300, height: 324 });
 const nodeTypes = ["DOCUMENT", "PAGE", "SLICE"];
-
-const { selection } = figma.currentPage;
 
 figma.ui.onmessage = (msg) => {
   if (msg.type === "scale-value") {
     let result;
     async function resizeFrame() {
-      selection.forEach(async (node) => {
+      figma.currentPage.selection.forEach(async (node) => {
         if (!nodeTypes.includes(node.type)) {
           result = msg.scaleAmount / 100;
           if (
@@ -31,7 +29,12 @@ figma.ui.onmessage = (msg) => {
           );
         }
       });
+      console.log(
+        msg.horizontalConstraint,
+        msg.verticalConstraint + " from TS"
+      );
     }
+
     resizeFrame();
     if (msg.checkboxOn === true) {
       figma.closePlugin();
@@ -41,7 +44,7 @@ figma.ui.onmessage = (msg) => {
   if (msg.type === "scale-width-value") {
     let result;
     async function resizeFrameByWidth() {
-      selection.forEach(async (node) => {
+      figma.currentPage.selection.forEach(async (node) => {
         if (!nodeTypes.includes(node.type)) {
           result = msg.scaleWidthAmount / node.width;
           if (
@@ -64,6 +67,7 @@ figma.ui.onmessage = (msg) => {
         }
       });
     }
+
     resizeFrameByWidth();
     if (msg.checkboxOn === true) {
       figma.closePlugin();
@@ -73,7 +77,7 @@ figma.ui.onmessage = (msg) => {
   if (msg.type === "scale-height-value") {
     let result;
     async function resizeFrameByHeight() {
-      selection.forEach(async (node) => {
+      figma.currentPage.selection.forEach(async (node) => {
         if (!nodeTypes.includes(node.type)) {
           result = msg.scaleHeightAmount / node.height;
           if (
@@ -97,6 +101,7 @@ figma.ui.onmessage = (msg) => {
       });
     }
     resizeFrameByHeight();
+
     if (msg.checkboxOn === true) {
       figma.closePlugin();
     }

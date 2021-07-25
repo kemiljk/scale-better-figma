@@ -7,15 +7,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-figma.showUI(__html__, { width: 300, height: 280 });
+figma.showUI(__html__, { width: 300, height: 324 });
 const nodeTypes = ["DOCUMENT", "PAGE", "SLICE"];
-const { selection } = figma.currentPage;
 figma.ui.onmessage = (msg) => {
     if (msg.type === "scale-value") {
         let result;
         function resizeFrame() {
             return __awaiter(this, void 0, void 0, function* () {
-                selection.forEach((node) => __awaiter(this, void 0, void 0, function* () {
+                figma.currentPage.selection.forEach((node) => __awaiter(this, void 0, void 0, function* () {
                     if (!nodeTypes.includes(node.type)) {
                         result = msg.scaleAmount / 100;
                         if (node.type === "COMPONENT" ||
@@ -35,6 +34,7 @@ figma.ui.onmessage = (msg) => {
                         figma.notify(`Rescaled to ${node.width}px wide and ${node.height}px high`);
                     }
                 }));
+                console.log(msg.horizontalConstraint, msg.verticalConstraint + " from TS");
             });
         }
         resizeFrame();
@@ -46,7 +46,7 @@ figma.ui.onmessage = (msg) => {
         let result;
         function resizeFrameByWidth() {
             return __awaiter(this, void 0, void 0, function* () {
-                selection.forEach((node) => __awaiter(this, void 0, void 0, function* () {
+                figma.currentPage.selection.forEach((node) => __awaiter(this, void 0, void 0, function* () {
                     if (!nodeTypes.includes(node.type)) {
                         result = msg.scaleWidthAmount / node.width;
                         if (node.type === "COMPONENT" ||
@@ -77,7 +77,7 @@ figma.ui.onmessage = (msg) => {
         let result;
         function resizeFrameByHeight() {
             return __awaiter(this, void 0, void 0, function* () {
-                selection.forEach((node) => __awaiter(this, void 0, void 0, function* () {
+                figma.currentPage.selection.forEach((node) => __awaiter(this, void 0, void 0, function* () {
                     if (!nodeTypes.includes(node.type)) {
                         result = msg.scaleHeightAmount / node.height;
                         if (node.type === "COMPONENT" ||

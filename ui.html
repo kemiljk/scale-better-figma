@@ -68,11 +68,11 @@
     border-radius: 8px;
     padding: 8px;
     background-color: white;
-    color: rgb(87, 87, 87);
+    color: #575757;
     font-weight: 500;
     box-shadow: none;
     outline: none;
-    border: 2px solid darkgrey;
+    border: 2px solid #d4d6dd;
     margin-right: 0.25rem;
   }
   input:active {
@@ -87,11 +87,11 @@
     border-radius: 8px;
     padding: 8px;
     background-color: white;
-    color: rgb(87, 87, 87);
+    color: #575757;
     font-weight: 500;
     box-shadow: none;
     outline: none;
-    border: 2px solid darkgrey;
+    border: 2px solid #d4d6dd;
   }
   select:first-of-type {
     margin-right: 0.25rem;
@@ -115,7 +115,7 @@
     transition: all 0.1s ease-in-out;
   }
   .secondary {
-    margin-right: 0.25rem;
+    /* margin-right: 0.25rem; */
     background-color: rgb(238, 237, 237);
     color: rgb(87, 87, 87);
     height: 40px;
@@ -187,13 +187,16 @@
     height: 1rem;
   }
   .icon {
-    width: 50px;
+    width: 100px;
   }
   .justify-end {
     justify-content: space-between;
   }
   .mb-0 {
     margin-bottom: 0;
+  }
+  .mr-1 {
+    margin-right: 0.25rem;
   }
 
   /* The switch - the box around the slider */
@@ -219,7 +222,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #d5d6d7;
+    background-color: #d4d6dd;
     -webkit-transition: 0.4s;
     transition: 0.4s;
   }
@@ -241,7 +244,7 @@
   }
 
   input:focus + .slider {
-    box-shadow: 0 0 1px #0985d8;
+    box-shadow: 0 0 0 2px #17a0fb;
   }
 
   input:checked + .slider:before {
@@ -269,7 +272,7 @@
 </div>
 <h5 style="margin-bottom: 0; margin-top: 0">Set constraints</h5>
 <div>
-  <div class="vertical">
+  <div class="vertical mr-1">
     <div style="justify-content: flex-start">
       <svg
         width="16"
@@ -334,19 +337,7 @@
     placeholder="Scale (%)"
     onchange="setValues()"
   />
-  <button id="scaleByPercent" class="primary">Scale</button>
-</div>
-
-<div>
-  <input
-    type="text"
-    name="scaleWidth"
-    id="scaleWidth"
-    value=""
-    placeholder="Width (px)"
-    onchange="setWidthValues()"
-  />
-  <button id="scaleByWidth" class="primary icon">
+  <button id="scaleByPercent" class="primary icon">
     <span
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -364,6 +355,37 @@
       </svg>
     </span>
   </button>
+</div>
+
+<div>
+  <input
+    type="text"
+    name="scaleWidth"
+    id="scaleWidth"
+    value=""
+    placeholder="Width (px)"
+    onchange="setWidthValues()"
+  />
+  <button id="scaleByWidth" class="secondary icon">
+    <span
+      ><svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="#272727"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
+        />
+      </svg>
+    </span>
+  </button>
+</div>
+<div>
   <input
     type="text"
     name="scaleHeight"
@@ -372,14 +394,14 @@
     placeholder="Height (px)"
     onchange="setHeightValues()"
   />
-  <button id="scaleByHeight" class="primary icon">
+  <button id="scaleByHeight" class="secondary icon">
     <span
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-6 w-6"
         fill="none"
         viewBox="0 0 24 24"
-        stroke="#fff"
+        stroke="#272727"
       >
         <path
           stroke-linecap="round"
@@ -414,14 +436,17 @@
 
   function setValues() {
     scaleAmount = Number(scaleTextBox.value ?? 0);
+    return;
   }
 
   function setWidthValues() {
     scaleWidthAmount = Number(scaleWidthTextBox.value ?? 0);
+    return;
   }
 
   function setHeightValues() {
     scaleHeightAmount = Number(scaleHeightTextBox.value ?? 0);
+    return;
   }
 
   function setHorizontalConstraint() {
@@ -435,6 +460,7 @@
       },
       "*"
     );
+    return;
   }
 
   function setVerticalConstraint() {
@@ -448,13 +474,16 @@
       },
       "*"
     );
+    return;
   }
 
-  function sendParentConstraints() {
+  var sendParentConstraints;
+  (sendParentConstraints = function () {
     setVerticalConstraint();
     setHorizontalConstraint();
+    return;
     console.log(horizontalConstraint, verticalConstraint, "from UI");
-  }
+  })();
 
   const checkbox = document.getElementById("checkbox");
   let checkboxOn = checkbox.hasAttribute("checked");
@@ -462,6 +491,7 @@
     checkbox.toggleAttribute("checked");
     checkboxOn = checkbox.hasAttribute("checked");
     console.log(checkboxOn);
+    return;
   };
 
   document.getElementById("scaleByPercent").onclick = () => {
