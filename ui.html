@@ -506,47 +506,51 @@
     return;
   }
 
-  // function setHorizontalConstraint() {
-  //   horizontalConstraint = horizontalConstraints.value;
-  //   parent.postMessage(
-  //     {
-  //       pluginMessage: {
-  //         type: ["scale-value", "scale-height-value", "scale-width-value"],
-  //         horizontalConstraint,
-  //       },
-  //     },
-  //     "*"
-  //   );
-  //   return;
-  // }
+  function setHorizontalConstraint() {
+    horizontalConstraint = horizontalConstraints.value;
+    // horizontalConstraint =
+    //   horizontalConstraints.options[horizontalConstraints.selectedIndex].value;
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: ["scale-value", "scale-height-value", "scale-width-value"],
+          horizontalConstraint,
+        },
+      },
+      "*"
+    );
+    return;
+  }
 
-  // function setVerticalConstraint() {
-  //   verticalConstraint = verticalConstraints.value;
-  //   verticalConstraint =
-  //     verticalConstraints.options[verticalConstraints.selectedIndex].value;
-  //   parent.postMessage(
-  //     {
-  //       pluginMessage: {
-  //         type: ["scale-value", "scale-height-value", "scale-width-value"],
-  //         verticalConstraint,
-  //       },
-  //     },
-  //     "*"
-  //   );
-  //   return;
-  // }
+  function setVerticalConstraint() {
+    verticalConstraint = verticalConstraints.value;
 
-  // var sendParentConstraints;
-  // (sendParentConstraints = function () {
-  //   setVerticalConstraint();
-  //   setHorizontalConstraint();
-  //   return;
-  //   console.log(horizontalConstraint, verticalConstraint, "from UI");
-  // })();
+    // verticalConstraint =
+    //   verticalConstraints.options[verticalConstraints.selectedIndex].value;
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: ["scale-value", "scale-height-value", "scale-width-value"],
+          verticalConstraint,
+        },
+      },
+      "*"
+    );
+    return;
+  }
+
+  var sendParentConstraints;
+  (sendParentConstraints = function () {
+    setHorizontalConstraint();
+    setVerticalConstraint();
+    return;
+    console.log(horizontalConstraint, verticalConstraint, "from UI");
+  })();
 
   document.getElementById("horizontalConstraint").onclick = () => {
     horizontalConstraint =
       horizontalConstraints.options[horizontalConstraints.selectedIndex].value;
+    setHorizontalConstraint();
     parent.postMessage(
       {
         pluginMessage: {
@@ -561,6 +565,7 @@
   document.getElementById("verticalConstraint").onclick = () => {
     verticalConstraint =
       verticalConstraints.options[verticalConstraints.selectedIndex].value;
+    setVerticalConstraint();
     parent.postMessage(
       {
         pluginMessage: {

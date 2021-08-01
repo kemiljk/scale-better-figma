@@ -23,7 +23,9 @@ figma.ui.onmessage = (msg) => {
                             node.type === "ELLIPSE" ||
                             node.type === "INSTANCE" ||
                             node.type === "STAR" ||
-                            node.type === "POLYGON") {
+                            node.type === "POLYGON" ||
+                            node.type === "VECTOR" ||
+                            node.type === "FRAME") {
                             node.constraints = {
                                 horizontal: msg.horizontalConstraint,
                                 vertical: msg.verticalConstraint,
@@ -55,7 +57,9 @@ figma.ui.onmessage = (msg) => {
                             node.type === "ELLIPSE" ||
                             node.type === "INSTANCE" ||
                             node.type === "STAR" ||
-                            node.type === "POLYGON") {
+                            node.type === "POLYGON" ||
+                            node.type === "VECTOR" ||
+                            node.type === "FRAME") {
                             node.constraints = {
                                 horizontal: msg.horizontalConstraint,
                                 vertical: msg.verticalConstraint,
@@ -86,7 +90,9 @@ figma.ui.onmessage = (msg) => {
                             node.type === "ELLIPSE" ||
                             node.type === "INSTANCE" ||
                             node.type === "STAR" ||
-                            node.type === "POLYGON") {
+                            node.type === "POLYGON" ||
+                            node.type === "VECTOR" ||
+                            node.type === "FRAME") {
                             node.constraints = {
                                 horizontal: msg.horizontalConstraint,
                                 vertical: msg.verticalConstraint,
