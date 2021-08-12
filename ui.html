@@ -198,6 +198,9 @@
   .mr-1 {
     margin-right: 0.25rem;
   }
+  .mt-1 {
+    margin-top: 0.25rem;
+  }
 
   /* The switch - the box around the slider */
   .switch {
@@ -327,6 +330,9 @@
     </select>
   </div>
 </div>
+<button class="secondary mt-1" onclick="sendParentConstraints()">
+  Set constraints
+</button>
 <h5 style="margin-bottom: 0">Scale</h5>
 <div>
   <input
@@ -470,6 +476,23 @@
     </span>
   </button>
 </div>
+<h5 style="margin-bottom: 0">Min/Max</h5>
+<div>
+  <button class="secondary mt-1 mr-1" id="scale-max-width-value">
+    Scale to Max W
+  </button>
+  <button class="secondary mt-1" id="scale-min-width-value">
+    Scale to Min W
+  </button>
+</div>
+<div>
+  <button class="secondary mt-1 mr-1" id="scale-max-height-value">
+    Scale to Max H
+  </button>
+  <button class="secondary mt-1" id="scale-min-height-value">
+    Scale to Min H
+  </button>
+</div>
 
 <script>
   /* Variables */
@@ -508,44 +531,27 @@
 
   function setHorizontalConstraint() {
     horizontalConstraint = horizontalConstraints.value;
-    // horizontalConstraint =
-    //   horizontalConstraints.options[horizontalConstraints.selectedIndex].value;
-    parent.postMessage(
-      {
-        pluginMessage: {
-          type: ["scale-value", "scale-height-value", "scale-width-value"],
-          horizontalConstraint,
-        },
-      },
-      "*"
-    );
     return;
   }
 
   function setVerticalConstraint() {
     verticalConstraint = verticalConstraints.value;
+    return;
+  }
 
-    // verticalConstraint =
-    //   verticalConstraints.options[verticalConstraints.selectedIndex].value;
+  function sendParentConstraints() {
+    console.log(horizontalConstraint, verticalConstraint, "from UI");
     parent.postMessage(
       {
         pluginMessage: {
-          type: ["scale-value", "scale-height-value", "scale-width-value"],
+          type: "set-constraints",
+          horizontalConstraint,
           verticalConstraint,
         },
       },
       "*"
     );
-    return;
   }
-
-  var sendParentConstraints;
-  (sendParentConstraints = function () {
-    setHorizontalConstraint();
-    setVerticalConstraint();
-    return;
-    console.log(horizontalConstraint, verticalConstraint, "from UI");
-  })();
 
   document.getElementById("horizontalConstraint").onclick = () => {
     horizontalConstraint =
@@ -554,7 +560,6 @@
     parent.postMessage(
       {
         pluginMessage: {
-          type: ["scale-value", "scale-height-value", "scale-width-value"],
           horizontalConstraint,
         },
       },
@@ -569,8 +574,55 @@
     parent.postMessage(
       {
         pluginMessage: {
-          type: ["scale-value", "scale-height-value", "scale-width-value"],
           verticalConstraint,
+        },
+      },
+      "*"
+    );
+  };
+
+  document.getElementById("scale-max-width-value").onclick = () => {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "scale-max-width-value",
+          checkboxOn,
+        },
+      },
+      "*"
+    );
+  };
+
+  document.getElementById("scale-min-width-value").onclick = () => {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "scale-min-width-value",
+          checkboxOn,
+        },
+      },
+      "*"
+    );
+  };
+
+  document.getElementById("scale-max-height-value").onclick = () => {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "scale-max-height-value",
+          checkboxOn,
+        },
+      },
+      "*"
+    );
+  };
+
+  document.getElementById("scale-min-height-value").onclick = () => {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "scale-min-height-value",
+          checkboxOn,
         },
       },
       "*"
