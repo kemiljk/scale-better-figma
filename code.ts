@@ -1,53 +1,34 @@
-figma.showUI(__html__, { width: 300, height: 500 });
+figma.showUI(__html__, { width: 300, height: 350 });
 const nodeTypes = ["DOCUMENT", "PAGE", "SLICE"];
 
-figma.ui.onmessage = (msg) => {
-  if (msg.type === "set-constraints") {
-    async function setConstraints() {
-      figma.currentPage.selection.forEach(async (node) => {
-        if (
-          node.type === "COMPONENT" ||
-          node.type === "COMPONENT_SET" ||
-          node.type === "RECTANGLE" ||
-          node.type === "ELLIPSE" ||
-          node.type === "INSTANCE" ||
-          node.type === "STAR" ||
-          node.type === "POLYGON" ||
-          node.type === "VECTOR" ||
-          node.type === "FRAME"
-        ) {
-          node.constraints = {
-            horizontal: msg.horizontalConstraint as ConstraintType,
-            vertical: msg.verticalConstraint as ConstraintType,
-          };
-        }
-      });
-    }
-    setConstraints();
+function makeSelection(node) {
+  if (
+    figma.currentPage.selection.length > 0 &&
+    !nodeTypes.includes(node.type)
+  ) {
+    var selectionWidth = node.width;
+    figma.ui.postMessage({ width: selectionWidth });
+    var selectionHeight = node.height;
+    figma.ui.postMessage({ height: selectionHeight });
   }
+  return;
+}
 
+figma.on("selectionchange", () => {
+  if (figma.currentPage.selection.length === 0) {
+    figma.notify("Select an object to get the selection value.");
+  } else {
+    makeSelection(figma.currentPage.selection[0]);
+  }
+});
+
+figma.ui.onmessage = (msg) => {
   if (msg.type === "scale-value") {
     let result;
     async function resizeFrame() {
       figma.currentPage.selection.forEach(async (node) => {
         if (!nodeTypes.includes(node.type)) {
           result = msg.scaleAmount / 100;
-          if (
-            node.type === "COMPONENT" ||
-            node.type === "COMPONENT_SET" ||
-            node.type === "RECTANGLE" ||
-            node.type === "ELLIPSE" ||
-            node.type === "INSTANCE" ||
-            node.type === "STAR" ||
-            node.type === "POLYGON" ||
-            node.type === "VECTOR" ||
-            node.type === "FRAME"
-          ) {
-            node.constraints = {
-              horizontal: msg.horizontalConstraint as ConstraintType,
-              vertical: msg.verticalConstraint as ConstraintType,
-            };
-          }
           node.rescale(result);
           node.resize(Math.round(node.width), Math.round(node.height));
           figma.notify(
@@ -55,10 +36,6 @@ figma.ui.onmessage = (msg) => {
           );
         }
       });
-      console.log(
-        msg.horizontalConstraint,
-        msg.verticalConstraint + " from TS"
-      );
     }
 
     resizeFrame();
@@ -73,22 +50,6 @@ figma.ui.onmessage = (msg) => {
       figma.currentPage.selection.forEach(async (node) => {
         if (!nodeTypes.includes(node.type)) {
           result = msg.scaleWidthAmount / node.width;
-          if (
-            node.type === "COMPONENT" ||
-            node.type === "COMPONENT_SET" ||
-            node.type === "RECTANGLE" ||
-            node.type === "ELLIPSE" ||
-            node.type === "INSTANCE" ||
-            node.type === "STAR" ||
-            node.type === "POLYGON" ||
-            node.type === "VECTOR" ||
-            node.type === "FRAME"
-          ) {
-            node.constraints = {
-              horizontal: msg.horizontalConstraint as ConstraintType,
-              vertical: msg.verticalConstraint as ConstraintType,
-            };
-          }
           node.rescale(result);
           node.resize(Math.round(node.width), Math.round(node.height));
           figma.notify(`Rescaled to ${node.width}px wide`);
@@ -156,22 +117,6 @@ figma.ui.onmessage = (msg) => {
       figma.currentPage.selection.forEach(async (node) => {
         if (!nodeTypes.includes(node.type)) {
           result = msg.scaleHeightAmount / node.height;
-          if (
-            node.type === "COMPONENT" ||
-            node.type === "COMPONENT_SET" ||
-            node.type === "RECTANGLE" ||
-            node.type === "ELLIPSE" ||
-            node.type === "INSTANCE" ||
-            node.type === "STAR" ||
-            node.type === "POLYGON" ||
-            node.type === "VECTOR" ||
-            node.type === "FRAME"
-          ) {
-            node.constraints = {
-              horizontal: msg.horizontalConstraint as ConstraintType,
-              vertical: msg.verticalConstraint as ConstraintType,
-            };
-          }
           node.rescale(result);
           node.resize(Math.round(node.width), Math.round(node.height));
           figma.notify(`Rescaled to ${node.height}px high`);
