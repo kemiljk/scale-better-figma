@@ -11,12 +11,7 @@ function makeSelection(node) {
     return;
 }
 figma.on("selectionchange", () => {
-    if (figma.currentPage.selection.length === 0) {
-        figma.notify("Select an object to get the selection value.");
-    }
-    else {
-        makeSelection(figma.currentPage.selection[0]);
-    }
+    makeSelection(figma.currentPage.selection[0]);
 });
 figma.ui.onmessage = (msg) => {
     if (msg.type === "scale-value") {
